@@ -99,7 +99,6 @@ class BleScanActivity : AppCompatActivity() {
         BleManager.getInstance()
             .enableLog(true)
             .setReConnectCount(1, 5000)
-            .setSplitWriteNum(20)
             .setConnectOverTime(10000)
             .setOperateTimeout(5000);
     }

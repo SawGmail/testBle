@@ -29,6 +29,8 @@ class BleDeviceActivity : AppCompatActivity() {
 
     val sendData = "68AAAAAAAAAAAA6811584A21212134343337EE35343337EE33333333EE33343333EE33353333EE33363333EE33373333EE33333433EE33343433EE33353433EE33363433EE33373433EE33333533EE33343533EE33353533EE33363533EE333735338816"
 
+    private val FIXED_USED_NUM = 3
+
     private val mtu = 256
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +48,6 @@ class BleDeviceActivity : AppCompatActivity() {
         val ret = getConnectedDevice()
         if (ret) {
             registerNotify()
-            requestMtu()
             setDefaultDataInEditText()
         }
     }
@@ -78,6 +79,8 @@ class BleDeviceActivity : AppCompatActivity() {
     private fun notifyCallback() = object : BleNotifyCallback() {
         override fun onNotifySuccess() {
             Toast.makeText(this@BleDeviceActivity, "onNotifySuccess", Toast.LENGTH_SHORT).show()
+
+            requestMtu()
         }
 
         override fun onNotifyFailure(exception: BleException?) {
@@ -94,10 +97,14 @@ class BleDeviceActivity : AppCompatActivity() {
     }
 
     private fun requestMtu() {
-
+        Log.d("BleDeviceActivity", "requestMtu, mtu: $mtu")
         BleManager.getInstance().setMtu(bleDevice, mtu, object : BleMtuChangedCallback() {
-            override fun onSetMTUFailure(exception: BleException) {}
+            override fun onSetMTUFailure(exception: BleException) {
+                Log.d("BleDeviceActivity", "onSetMTUFailure, exception: $exception")
+            }
             override fun onMtuChanged(mtu: Int) {
+                Log.d("BleDeviceActivity", "onMtuChanged, mtu: $mtu")
+                BleManager.getInstance().setSplitWriteNum(mtu - FIXED_USED_NUM)
                 Toast.makeText(this@BleDeviceActivity, "onMtuChanged, mtu: $mtu", Toast.LENGTH_SHORT).show()
             }
         })

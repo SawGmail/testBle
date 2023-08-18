@@ -114,6 +114,7 @@ class BleDeviceActivity : AppCompatActivity() {
     }
 
     private fun btnClick() {
+        tvReceiveData.text = ""
         val data = etSendData.text.toString()
         val byteArray: ByteArray = data.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
         Log.d("BleDeviceActivity", "send data, byte array: ${byteArray.toString()}")

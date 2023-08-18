@@ -60,14 +60,17 @@ class BleScanActivity : AppCompatActivity() {
         }
     }
 
+
     private fun connectTargetBleDevice(bleDevice: BleDevice) {
         BleManager.getInstance().cancelScan()
         BleManager.getInstance().connect(bleDevice, object : BleGattCallback() {
             override fun onStartConnect() {
                 Log.d("BleScanActivity", "onStartConnect: $bleDevice")
+                Toast.makeText(this@BleScanActivity, "开始连接", Toast.LENGTH_SHORT).show()
             }
 
             override fun onConnectFail(bleDevice: BleDevice?, exception: BleException?) {
+                Toast.makeText(this@BleScanActivity, "连接失败，请重试", Toast.LENGTH_SHORT).show()
                 Log.d("BleScanActivity", "onConnectFail: $bleDevice")
             }
 

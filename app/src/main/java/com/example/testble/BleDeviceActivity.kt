@@ -51,6 +51,12 @@ class BleDeviceActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        BleManager.getInstance().disconnect(bleDevice)
+    }
+
+
     private fun setDefaultDataInEditText()
     {
         etSendData.setText(sendData)
